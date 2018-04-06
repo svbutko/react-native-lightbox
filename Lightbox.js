@@ -1,6 +1,6 @@
 import React, { Component,  Children, cloneElement } from 'react';
 import PropTypes from 'prop-types';
-import { Animated, TouchableHighlight, View } from 'react-native';
+import { TouchableOpacity, View } from 'react-native';
 
 import LightboxOverlay from './LightboxOverlay';
 
@@ -9,7 +9,6 @@ export default class Lightbox extends Component {
     activeProps:     PropTypes.object,
     renderHeader:    PropTypes.func,
     renderContent:   PropTypes.func,
-    underlayColor:   PropTypes.string,
     backgroundColor: PropTypes.string,
     didOpen:         PropTypes.func,
     onOpen:          PropTypes.func,
@@ -38,7 +37,6 @@ export default class Lightbox extends Component {
       width: 0,
       height: 0,
     },
-    layoutOpacity: new Animated.Value(1),
   };
 
   getContent = () => {
@@ -94,9 +92,6 @@ export default class Lightbox extends Component {
             isOpen: true,
           });
         }
-        setTimeout(() => {
-          this._root && this.state.layoutOpacity.setValue(0);
-        });
       });
     });
   }
@@ -106,7 +101,6 @@ export default class Lightbox extends Component {
   }
 
   onClose = () => {
-    this.state.layoutOpacity.setValue(1);
     this.setState({
       isOpen: false,
     }, this.props.onClose);
@@ -125,15 +119,10 @@ export default class Lightbox extends Component {
         style={this.props.style}
         onLayout={() => {}}
       >
-        <Animated.View style={{opacity: this.state.layoutOpacity}}>
-          <TouchableHighlight
-            underlayColor={this.props.underlayColor}
-            onPress={this.open}
-          >
+          <TouchableOpacity onPress={this.open} activeOpacity={1}>
             {this.props.children}
-          </TouchableHighlight>
-        </Animated.View>
-        {this.props.navigator ? false : <LightboxOverlay {...this.getOverlayProps()} />}
+          </TouchableOpacity>
+        {this.props.navigator ? false : <LightboxOverlay {...this.getOverlayProps()}/>}
       </View>
     );
   }
