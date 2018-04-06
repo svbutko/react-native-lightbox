@@ -5,8 +5,8 @@ import { Animated, Dimensions, Modal, PanResponder, Platform, StatusBar, StyleSh
 const WINDOW_HEIGHT = Dimensions.get('window').height;
 const WINDOW_WIDTH = Dimensions.get('window').width;
 const DRAG_DISMISS_THRESHOLD = 150;
-const STATUS_BAR_OFFSET = (Platform.OS === 'android' ? -25 : 0);
-const isIOS = Platform.OS === 'ios';
+const STATUS_BAR_OFFSET = (Platform.OS == 'android' ? -25 : 0);
+const isIOS = Platform.OS == 'ios';
 
 const styles = StyleSheet.create({
   background: {
@@ -36,13 +36,9 @@ const styles = StyleSheet.create({
     lineHeight: 40,
     width: 40,
     textAlign: 'center',
-    shadowOffset: {
-      width: 0,
-      height: 0,
-    },
-    shadowRadius: 1.5,
-    shadowColor: 'black',
-    shadowOpacity: 0.8,
+    textShadowColor: 'black',
+    textShadowOffset: { width: 1, height: 4 },
+    textShadowRadius: 5
   },
 });
 
@@ -159,9 +155,12 @@ export default class LightboxOverlay extends Component {
     this.setState({
       isAnimating: true,
     });
-    Animated.spring(
+    Animated.timing(
       this.state.openVal,
-      { toValue: 0, ...this.props.springConfig }
+      {
+        toValue: 0,
+        duration: 200,
+      }
     ).start(() => {
       this.setState({
         isAnimating: false,
@@ -226,7 +225,7 @@ export default class LightboxOverlay extends Component {
       )
     )}</Animated.View>);
     const content = (
-      <Animated.View style={[openStyle, dragStyle]} {...handlers}>
+      <Animated.View style={[openStyle, dragStyle, lightboxOpacityStyle]} {...handlers}>
         {this.props.children}
       </Animated.View>
     );
