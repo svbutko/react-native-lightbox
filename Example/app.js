@@ -10,7 +10,7 @@ import {
   View,
 } from 'react-native';
 
-import Lightbox from 'react-native-lightbox';
+import {Lightbox} from 'react-native-lightbox';
 import Carousel from 'react-native-looped-carousel';
 
 const WINDOW_WIDTH = Dimensions.get('window').width;
@@ -32,7 +32,7 @@ const renderCarousel = () => (
 export default () => (
   <ScrollView style={styles.container}>
     <View style={styles.text}><Text>Lorem ipsum dolor sit amet, consectetur adipiscing elit, sed do eiusmod tempor incididunt ut labore et dolore magna aliqua. </Text></View>
-    <Lightbox underlayColor="white">
+    <Lightbox>
       <Image
         style={styles.contain}
         resizeMode="contain"
