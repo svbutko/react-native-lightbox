@@ -1,9 +1,9 @@
-import React, { PureComponent,  Children, cloneElement } from 'react';
+import React, {PureComponent,  Children, cloneElement} from 'react';
 import PropTypes from 'prop-types';
-import { TouchableOpacity, View } from 'react-native';
-import LightboxOverlay from './LightboxOverlay';
+import {TouchableOpacity, View} from 'react-native';
+import {LightboxOverlay} from './LightboxOverlay';
 
-export default class Lightbox extends PureComponent {
+export class Lightbox extends PureComponent {
   root: View;
   setRootRef = (ref: any): void => this.root = ref;
   onRootLayout = (): void => {};
