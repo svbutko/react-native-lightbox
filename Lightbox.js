@@ -1,10 +1,13 @@
-import React, { Component,  Children, cloneElement } from 'react';
+import React, { PureComponent,  Children, cloneElement } from 'react';
 import PropTypes from 'prop-types';
 import { TouchableOpacity, View } from 'react-native';
-
 import LightboxOverlay from './LightboxOverlay';
 
-export default class Lightbox extends Component {
+export default class Lightbox extends PureComponent {
+  root: View;
+  setRootRef = (ref: any): void => this.root = ref;
+  onRootLayout = (): void => {};
+
   static propTypes = {
     activeProps:     PropTypes.object,
     renderHeader:    PropTypes.func,
@@ -65,11 +68,11 @@ export default class Lightbox extends Component {
   })
 
   open = () => {
-    this._root.measure((ox, oy, width, height, px, py) => {
+    this.root.measure((ox, oy, width, height, px, py) => {
       this.props.onOpen();
 
       this.setState({
-        isOpen: (this.props.navigator ? true : false),
+        isOpen: this.props.navigator != null,
         isAnimating: true,
         origin: {
           width,
@@ -78,7 +81,7 @@ export default class Lightbox extends Component {
           y: py,
         },
       }, () => {
-        this.props.didOpen();
+        this.props.didOpen()
         if(this.props.navigator) {
           const route = {
             component: LightboxOverlay,
@@ -88,23 +91,17 @@ export default class Lightbox extends Component {
           routes.push(route);
           this.props.navigator.immediatelyResetRouteStack(routes);
         } else {
-          this.setState({
-            isOpen: true,
-          });
+          this.setState({isOpen: true});
         }
       });
     });
-  }
-
-  close = () => {
-    throw new Error('Lightbox.close method is deprecated. Use renderHeader(close) prop instead.')
   }
 
   onClose = () => {
     this.setState({
       isOpen: false,
     }, this.props.onClose);
-    if(this.props.navigator) {
+    if(this.props.navigator != null) {
       const routes = this.props.navigator.getCurrentRoutes();
       routes.pop();
       this.props.navigator.immediatelyResetRouteStack(routes);
@@ -112,17 +109,14 @@ export default class Lightbox extends Component {
   }
 
   render() {
+    const {style, children, navigator} = this.props;
     // measure will not return anything useful if we dont attach a onLayout handler on android
     return (
-      <View
-        ref={component => this._root = component}
-        style={this.props.style}
-        onLayout={() => {}}
-      >
+      <View ref={this.setRootRef} style={style} onLayout={this.onRootLayout}>
           <TouchableOpacity onPress={this.open} activeOpacity={1}>
-            {this.props.children}
+            {children}
           </TouchableOpacity>
-        {this.props.navigator ? false : <LightboxOverlay {...this.getOverlayProps()}/>}
+        {navigator != null ? null : <LightboxOverlay {...this.getOverlayProps()}/>}
       </View>
     );
   }
