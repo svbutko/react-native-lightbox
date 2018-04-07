@@ -11,7 +11,7 @@ yarn add react-native-lightbox
 `navigator` property is optional but recommended on iOS, see next section for `Navigator` configuration.
 
 ```js
-import Lightbox from 'react-native-lightbox';
+import {Lightbox} from 'react-native-lightbox';
 
 const LightboxView ({ navigator }) => (
   <Lightbox navigator={navigator}>
@@ -59,7 +59,6 @@ const MyApp = () => (
 |**`onClose`**|`function`|Triggered when lightbox is closed|
 |**`onOpen`**|`function`|Triggered when lightbox is opened|
 |**`didOpen`**|`function`|Triggered after lightbox is opened|
-|**`underlayColor`**|`string`|Color of touchable background, defaults to `black`|
 |**`backgroundColor`**|`string`|Color of lightbox background, defaults to `black`|
 |**`swipeToDismiss`**|`bool`|Enables gestures to dismiss the fullscreen mode by swiping up or down, defaults to `true`.|
 |**`springConfig`**|`object`|[`Animated.spring`](https://facebook.github.io/react-native/docs/animations.html) configuration, defaults to `{ tension: 30, friction: 7 }`.|
