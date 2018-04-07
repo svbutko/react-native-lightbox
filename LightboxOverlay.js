@@ -8,7 +8,7 @@ const DRAG_DISMISS_THRESHOLD = 150;
 const isIOS = Platform.OS == 'ios';
 const STATUS_BAR_OFFSET = (isIOS ? 0 : -25);
 
-export default class LightboxOverlay extends PureComponent {
+export class LightboxOverlay extends PureComponent {
   static propTypes = {
     origin: PropTypes.shape({
       x:        PropTypes.number,
